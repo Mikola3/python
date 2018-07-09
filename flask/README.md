@@ -12,7 +12,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 # Usage
 export FLASK_APP=main.py
+
 flask run --host=192.168.56.15
+
 192.168.56.15 - ip хоста, с которого запускается скрипт.
 Данный ip должен быть в одной подсети с Artifactory.
 

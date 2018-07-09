@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # for run on python 2.7.5
-# python pyth.py storagee1 container1
+# python simple_parse_xml.py storagee1 container1
 
 from xml.dom import minidom
 import requests

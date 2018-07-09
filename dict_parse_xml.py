@@ -17,14 +17,12 @@ xmldoc = minidom.parse('test.xml')
 itemlist = xmldoc.getElementsByTagName('Name')
 max_count = len(itemlist)
 itemlist2 = xmldoc.getElementsByTagName('Last-Modified')
-max_count2 = len(itemlist2)
 current_count = 0
 dict = {}
 
 for current_count in range(max_count):
-    for current_count in range(max_count2):
-        a = str(itemlist[current_count].childNodes[0].nodeValue)
-        b = str(itemlist2[current_count].childNodes[0].nodeValue)
-        dict[a] = b
+    a = str(itemlist[current_count].childNodes[0].nodeValue)
+    b = str(itemlist2[current_count].childNodes[0].nodeValue)
+    dict[a] = b
 
 print(dict)

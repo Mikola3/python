@@ -1,3 +1,6 @@
+import time
+start_time = time.time()
+
 from sys import path
 from xml.dom import minidom
 import urllib2
@@ -7,6 +10,7 @@ import json
 
 path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), 'myenv/Lib/site-packages')))
 from jinja2 import Environment, FileSystemLoader
+
 
 #ignored = ['.bzr', '$RECYCLE.BIN', '.DAV', '.DS_Store', '.git', '.hg', '.htaccess', '.htpasswd', '.Spotlight-V100', '.svn', '__MACOSX', 'ehthumbs.db', 'robots.txt', 'Thumbs.db', 'thumbs.tps']
 #datatypes = {'audio': 'm4a,mp3,oga,ogg,webma,wav', 'archive': '7z,zip,rar,gz,tar', 'image': 'gif,ico,jpe,jpeg,jpg,png,svg,webp', 'pdf': 'pdf', 'quicktime': '3g2,3gp,3gp2,3gpp,mov,qt', 'source': 'atom,bat,bash,c,cmd,coffee,css,hml,js,json,java,less,markdown,md,php,pl,py,rb,rss,sass,scpt,swift,scss,sh,xml,yml,plist', 'text': 'txt', 'video': 'mp4,m4v,ogv,webm', 'website': 'htm,html,mhtm,mhtml,xhtm,xhtml'}
@@ -87,10 +91,10 @@ def out_of_azure_function(some_html="no_body"):
             "X-Awesome-Header": "YesItIs"
             }
         }
-
+    
     if some_html != "no_body":
         returnData["body"] = some_html
-    
+
     if "blob.core.windows.net" in some_html:
 #        returnData["body"] = some_html
         returnData["status"] = 301
@@ -98,6 +102,7 @@ def out_of_azure_function(some_html="no_body"):
 
     output = open(os.environ['res'], 'w')
     result = output.write(json.dumps(returnData))
+    print("--- %s seconds ---" % (time.time() - start_time)) # time of run function. time.time() - time from request to response
     return result
 
 
@@ -111,7 +116,7 @@ def gimme_page(p=''):
     env = Environment(loader=FileSystemLoader('templates'))
     template = env.get_template('index.html')
 
-    if path in get_all_folders(files):
+    if path in get_all_folders(files) or path == "":
         contents = []
         for filename in get_files_list(files, path[:-1]):
             info = {}
@@ -126,7 +131,8 @@ def gimme_page(p=''):
         print("i'm in elif")
         page = 'https://%s.blob.core.windows.net/%s/%s' % (storage_name, container_name, path)
     else:
-        page = "<h1>Oups, not working :)</h1>"
+#        pass
+        page = "<h1>favicon.ico?</h1>"
     out_of_azure_function(page)
 
 

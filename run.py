@@ -8,7 +8,7 @@ import os
 import re
 import json
 
-path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), 'myenv/Lib/site-packages')))
+path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), 'myenv/Lib/site-packages'))) # name of pyenv virt.env
 from jinja2 import Environment, FileSystemLoader
 
 
@@ -16,10 +16,10 @@ from jinja2 import Environment, FileSystemLoader
 #datatypes = {'audio': 'm4a,mp3,oga,ogg,webma,wav', 'archive': '7z,zip,rar,gz,tar', 'image': 'gif,ico,jpe,jpeg,jpg,png,svg,webp', 'pdf': 'pdf', 'quicktime': '3g2,3gp,3gp2,3gpp,mov,qt', 'source': 'atom,bat,bash,c,cmd,coffee,css,hml,js,json,java,less,markdown,md,php,pl,py,rb,rss,sass,scpt,swift,scss,sh,xml,yml,plist', 'text': 'txt', 'video': 'mp4,m4v,ogv,webm', 'website': 'htm,html,mhtm,mhtml,xhtm,xhtml'}
 #icontypes = {'fa-music': 'm4a,mp3,oga,ogg,webma,wav', 'fa-archive': '7z,zip,rar,gz,tar', 'fa-picture-o': 'gif,ico,jpe,jpeg,jpg,png,svg,webp', 'fa-file-text': 'pdf', 'fa-film': '3g2,3gp,3gp2,3gpp,mov,qt', 'fa-code': 'atom,plist,bat,bash,c,cmd,coffee,css,hml,js,json,java,less,markdown,md,php,pl,py,rb,rss,sass,scpt,swift,scss,sh,xml,yml', 'fa-file-text-o': 'txt', 'fa-film': 'mp4,m4v,ogv,webm', 'fa-globe': 'htm,html,mhtm,mhtml,xhtm,xhtml'}
 
-storage_name = "ifilimonau"
+storage_name = "pkfunction"
 container_name = "test"
 
-xml_url = 'https://%s.blob.core.windows.net/%s?restype=container&comp=list' % (storage_name, container_name)
+xml_url = 'https://%s.blob.core.windows.net/%s?restype=container&comp=list' % (storage_name, container_name) # link to url where we can see in xml file all files in blob storage
 
 
 def xml_bring_names(link):
@@ -102,7 +102,7 @@ def out_of_azure_function(some_html="no_body"):
 
     output = open(os.environ['res'], 'w')
     result = output.write(json.dumps(returnData))
-    print("--- %s seconds ---" % (time.time() - start_time)) # time of run function. time.time() - time from request to response
+    print("--- %s seconds ---" % (time.time() - start_time))
     return result
 
 
@@ -116,7 +116,7 @@ def gimme_page(p=''):
     env = Environment(loader=FileSystemLoader('templates'))
     template = env.get_template('index.html')
 
-    if path in get_all_folders(files) or path == "":
+    if path in get_all_folders(files):
         contents = []
         for filename in get_files_list(files, path[:-1]):
             info = {}
@@ -132,13 +132,13 @@ def gimme_page(p=''):
         page = 'https://%s.blob.core.windows.net/%s/%s' % (storage_name, container_name, path)
     else:
 #        pass
-        page = "<h1>favicon.ico?</h1>"
+        page = "<h1>Something went wrong. You shouldn't have seen it.</h1>"
     out_of_azure_function(page)
 
 
 def get_uri_from_trigger():
     """Obtain URI from GET Request."""
-    uri = os.environ["REQ_HEADERS_X-ORIGINAL-URL"][1:]
+    uri = os.environ["REQ_HEADERS_X-ORIGINAL-URL"][1:] # get uri from environment variable
     gimme_page(uri)
 
 
